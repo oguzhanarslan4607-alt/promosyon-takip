@@ -25,6 +25,8 @@
 const KEY='promosyon-takip-v1', $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)], id=()=>globalThis.crypto?.randomUUID?.()||('i'+Date.now()+Math.random()), today=()=>{let d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fresh=()=>({products:[],offices:[],people:[],deliveries:[],moves:[]});let db;try{db=JSON.parse(localStorage.getItem(KEY))||fresh()}catch{db=fresh()}for(const k of Object.keys(fresh()))if(!Array.isArray(db[k]))db[k]=[];
+const catalog=[['905542','ARZUM OKKA MINIO TÜRK KAHVESİ MAKİNESİ (SİYAH,BAKIR,GÜN BATIMI, NAR)'],['905546','MOTİVO EL FANI'],['905216P','DUŞ BAŞLIĞI PROMOSYON'],['3502711','MOTİVA ICESTONE WATCHES KOL SAATİ'],['3414364','ROSE CLEANMAX İKİLİ KOKU SETİ (FRAGRANCE & AROMA)'],['3400293','İKİLİ BANYO HAVLU SETİ (50x90-100 x150)']];
+for(const [code,name] of catalog)if(!db.products.some(p=>p.code===code))db.products.push({id:id(),code,name,category:'',stock:0,min:5});
 const save=()=>localStorage.setItem(KEY,JSON.stringify(db)), prod=x=>db.products.find(p=>p.id===x), office=x=>db.offices.find(o=>o.id===x), person=x=>db.people.find(p=>p.id===x), fmt=x=>x?x.slice(8,10)+'.'+x.slice(5,7)+'.'+x.slice(0,4):'—';
 const toast=t=>{let n=document.createElement('div');n.className='toast';n.textContent=t;document.body.append(n);setTimeout(()=>n.remove(),2600)}, empty=t=>`<div class="empty">${esc(t)}</div>`;
 const table=(heads,rows,msg)=>rows.length?`<table><thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table>`:empty(msg);
